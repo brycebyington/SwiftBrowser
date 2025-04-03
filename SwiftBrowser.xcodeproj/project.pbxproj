@@ -8,11 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		02F59CBE2D9EDF7900309A9F /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 02F59CBD2D9EDF7400309A9F /* README.md */; };
+		02F59CC12D9EF48100309A9F /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02F59CC02D9EF48100309A9F /* CoreText.framework */; };
+		02F59CC32D9F03D900309A9F /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02F59CC22D9F03D900309A9F /* AppKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		02F59C932D9EDE2700309A9F /* SwiftBrowser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftBrowser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		02F59CBD2D9EDF7400309A9F /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		02F59CC02D9EF48100309A9F /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		02F59CC22D9F03D900309A9F /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -28,6 +32,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				02F59CC12D9EF48100309A9F /* CoreText.framework in Frameworks */,
+				02F59CC32D9F03D900309A9F /* AppKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -39,6 +45,7 @@
 			children = (
 				02F59CBD2D9EDF7400309A9F /* README.md */,
 				02F59C952D9EDE2700309A9F /* SwiftBrowser */,
+				02F59CBF2D9EF48100309A9F /* Frameworks */,
 				02F59C942D9EDE2700309A9F /* Products */,
 			);
 			sourceTree = "<group>";
@@ -49,6 +56,15 @@
 				02F59C932D9EDE2700309A9F /* SwiftBrowser.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		02F59CBF2D9EF48100309A9F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				02F59CC22D9F03D900309A9F /* AppKit.framework */,
+				02F59CC02D9EF48100309A9F /* CoreText.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
