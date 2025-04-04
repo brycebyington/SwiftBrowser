@@ -8,15 +8,26 @@
 import Cocoa
 
 class ViewController: NSViewController {
+    @IBOutlet var textView: NSTextView!
     
     override func viewDidAppear() {
         super.viewDidAppear()
-        self.view.window?.title = "SwiftBrowser"
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        super.view.addSubview(LabelView())
+        DispatchQueue.global(qos: .userInitiated).async {
+            let browser = BrowserURL(urlString: "http://browser.engineering/")
+            if let responseText = browser.request() {
+                DispatchQueue.main.async {
+                    self.textView.string = responseText
+                }
+            } else {
+                DispatchQueue.main.async {
+                    self.textView.string = "Failed to load content."
+                }
+            }
+        }
         
         // Do any additional setup after loading the view.
     }

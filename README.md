@@ -3,6 +3,6 @@
 # features (wip)
 - an HTML parser
 - a page layout tool
-- text rendering using CoreText instead of tkinter
+- text rendering using AppKit
 
 feature parity is currently in active progress!
