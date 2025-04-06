@@ -3,6 +3,6 @@
 # features (wip)
 - an HTML parser
 - a page layout tool
-- text rendering using AppKit
+- text rendering using AppKit/CoreText
 
 feature parity is currently in active progress!

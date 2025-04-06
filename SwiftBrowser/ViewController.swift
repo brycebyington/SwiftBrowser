@@ -58,7 +58,8 @@ class BrowserView: NSView {
             let ascent = CTFontGetAscent(ctFont)
             // use displayList's x and y coordinates to position the text and draw to the current context
             // to be honest i have no idea why the text position is shifted down VSTEP (18) * 2, but adding 36 fixes it
-            context.textPosition = CGPoint(x: CGFloat(item.x), y: CGFloat(item.y) - CGFloat(ascent) + 36)
+            // EXCEPT when i wrappped it with a scrollview, then the problem went away i guess
+            context.textPosition = CGPoint(x: CGFloat(item.x), y: CGFloat(item.y) - CGFloat(ascent)/*+ 36*/)
             CTLineDraw(line, context)
         }
     }
@@ -73,11 +74,17 @@ class ViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         DispatchQueue.global(qos: .userInitiated).async {
-            let browser = BrowserURL(urlString: "http://browser.engineering/examples/example3-sizes.html")
+            let browser = BrowserURL(urlString: "http://browser.engineering/")
             if let layout = browser.request() {
                 DispatchQueue.main.async {
                     let browserView = BrowserView(frame: NSRect(x: 0, y: 0, width: 800, height: 600), layout: layout)
-                    super.view.addSubview(browserView)
+                    let scrollView = NSScrollView(frame: self.view.bounds)
+                    
+                    scrollView.autoresizingMask = [.width, .height]
+                    scrollView.hasVerticalScroller = true
+                    scrollView.documentView = browserView
+                    
+                    self.view.addSubview(scrollView)
                 }
             } else {
                 DispatchQueue.main.async {
