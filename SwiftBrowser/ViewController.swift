@@ -74,10 +74,13 @@ class ViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         DispatchQueue.global(qos: .userInitiated).async {
-            let browser = BrowserURL(urlString: "http://browser.engineering/")
+            let browser = BrowserURL(urlString: "http://browser.engineering/html.html")
             if let layout = browser.request() {
                 DispatchQueue.main.async {
-                    let browserView = BrowserView(frame: NSRect(x: 0, y: 0, width: 800, height: 600), layout: layout)
+                    let maxYPositionOfText = layout.displayList.map({ $0.y }).max()
+                    let pageHeight = CGFloat(maxYPositionOfText!)
+                    
+                    let browserView = BrowserView(frame: NSRect(x: 0, y: 0, width: 800, height: pageHeight), layout: layout)
                     let scrollView = NSScrollView(frame: self.view.bounds)
                     
                     scrollView.autoresizingMask = [.width, .height]
