@@ -6,9 +6,65 @@
 //
 
 import Cocoa
+import CoreText
+import Foundation
+
+class BrowserView: NSView {
+    // flip the coordinate system so that the origin point is at the top-left
+    override var isFlipped: Bool { return true }
+    
+    var layout: Layout?
+    
+    init(frame: NSRect, layout: Layout) {
+            self.layout = layout
+            super.init(frame: frame)
+        }
+        
+        // required by superclass NSView
+        required init?(coder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
+    override func draw(_ dirtyRect: NSRect) {
+        // dirtyRect is a rectange that defines the portion of a view that requires updating
+        super.draw(dirtyRect)
+        // the page layout, which is calculated after parsing the html
+        guard let layout = layout,
+              // the current graphical context, which we are going to draw to
+              let context = NSGraphicsContext.current?.cgContext else { return }
+        
+        // flip the text matrix since text was upside-down
+        context.textMatrix = CGAffineTransform(scaleX: 1.0, y: -1.0)
+
+        // iterate over each item in the displayList and draw each word with its parsed font
+        for item in layout.displayList {
+            // get the CTFont object from the displayList
+            let ctFont = item._font
+            let fontName = CTFontCopyPostScriptName(ctFont) as String
+            let fontSize = CTFontGetSize(ctFont)
+            // create the new font object
+            let nsFont = NSFont(name: fontName, size: fontSize) ?? NSFont.systemFont(ofSize: fontSize)
+            
+            // create the attributes to apply to the word
+            let attributes: [NSAttributedString.Key: Any] = [
+                .font: nsFont,
+                .foregroundColor: NSColor.labelColor
+            ]
+            // create an attributedString, which includes the text and its font attributes
+            let attributedString = NSAttributedString(string: item.word, attributes: attributes)
+            // create the line of text
+            let line = CTLineCreateWithAttributedString(attributedString)
+            
+            // grab the ascent value of the cont and subtract it from the y position
+            let ascent = CTFontGetAscent(ctFont)
+            // use displayList's x and y coordinates to position the text and draw to the current context
+            // to be honest i have no idea why the text position is shifted down VSTEP (18) * 2, but adding 36 fixes it
+            context.textPosition = CGPoint(x: CGFloat(item.x), y: CGFloat(item.y) - CGFloat(ascent) + 36)
+            CTLineDraw(line, context)
+        }
+    }
+}
 
 class ViewController: NSViewController {
-    @IBOutlet var textView: NSTextView!
     
     override func viewDidAppear() {
         super.viewDidAppear()
@@ -17,14 +73,15 @@ class ViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         DispatchQueue.global(qos: .userInitiated).async {
-            let browser = BrowserURL(urlString: "http://browser.engineering/")
-            if let responseText = browser.request() {
+            let browser = BrowserURL(urlString: "http://browser.engineering/examples/example3-sizes.html")
+            if let layout = browser.request() {
                 DispatchQueue.main.async {
-                    self.textView.string = responseText
+                    let browserView = BrowserView(frame: NSRect(x: 0, y: 0, width: 800, height: 600), layout: layout)
+                    super.view.addSubview(browserView)
                 }
             } else {
                 DispatchQueue.main.async {
-                    self.textView.string = "Failed to load content."
+                    print("loading failed")
                 }
             }
         }
@@ -37,7 +94,4 @@ class ViewController: NSViewController {
         // Update the view, if already loaded.
         }
     }
-
-
 }
-

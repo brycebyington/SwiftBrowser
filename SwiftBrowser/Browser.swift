@@ -8,6 +8,7 @@
 
 // https://developer.apple.com/documentation/foundation/
 import Foundation
+import CoreText
 
 // re-creating readline from Python
 func readLine(from socket: Int32) -> String? {
@@ -74,7 +75,7 @@ class BrowserURL {
     }
     
     // perform an http request
-    func request() -> String? {
+    func request() -> Layout? {
         var response = ""
         
         // create the socket
@@ -250,8 +251,10 @@ class BrowserURL {
         
         let rootElement = HTMLParser(body: response).parse()
         printTree(node: rootElement)
-        
-        return lex(input: response)
+        // optionally print layout results
+        print(Layout(tokens: rootElement).displayList)
+        let layout = Layout(tokens: rootElement)
+        return layout
     }
     func lex(input: String) -> String? {
         var body = ""

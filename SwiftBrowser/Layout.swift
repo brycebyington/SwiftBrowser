@@ -83,7 +83,7 @@ class Layout {
         let key = FontKey(size: size, weight: weight, style: style)
         
         if FONTS[key] == nil {
-            var fontName = "Helvetica"
+            let fontName = "Helvetica"
             // create the new font object with its size, hard-coding Helvetica for now
             let ctFont = CTFontCreateWithName(fontName as CFString, CGFloat(size), nil)
             let label = "\(fontName) \(size)"
@@ -95,14 +95,14 @@ class Layout {
     func flush() {
         if self.line.isEmpty { return }
         var metrics: [(ascent: CGFloat, descent: CGFloat, leading: CGFloat)] = []
-        for (x, word, _font) in self.line {
+        for (_, word, _font) in self.line {
             metrics.append(getFontMetrics(word: word, _font: _font))
         }
         let maxAscent = metrics.map({ $0.ascent }).max()!
-        var baseline = CGFloat(cursorY) + 1.25 * maxAscent
+        let baseline = CGFloat(cursorY) + 1.25 * maxAscent
         
         for (x, word, _font) in self.line {
-            var y = baseline - getFontMetrics(word: word, _font: _font).ascent
+            let y = baseline - getFontMetrics(word: word, _font: _font).ascent
             self.displayList.append((x, Int(y), word, _font))
         }
         let maxDescent = metrics.map({$0.descent}).max()!
@@ -130,6 +130,7 @@ class Layout {
                 word(word: String(token))
             }
         } else if let elementNode = tree as? ElementNode {
+            openTag(tag: elementNode.tag)
             for child in elementNode.children {
                 recurse(tree: child)
             }
@@ -150,7 +151,7 @@ class Layout {
         else if tag == "big" {
             self.size += 2
         }
-        else if tag == "br"{
+        else if tag == "br" {
             flush()
         }
             
