@@ -72,7 +72,7 @@ class Layout {
         
         self.weight = "normal"
         self.style = "roman"
-        self.size = 12
+        self.size = 16
         
         self.line = []
         recurse(tree: tokens)
@@ -83,8 +83,18 @@ class Layout {
         let key = FontKey(size: size, weight: weight, style: style)
         
         if FONTS[key] == nil {
-            let fontName = "Helvetica"
+            var fontName = "Helvetica"
+            
+            if weight == "bold" && style == "italic" {
+                    fontName = "Helvetica-BoldOblique"
+                } else if weight == "bold" {
+                    fontName = "Helvetica-Bold"
+                } else if style == "italic" {
+                    fontName = "Helvetica-Oblique"
+                }
+                
             // create the new font object with its size, hard-coding Helvetica for now
+            // and save a reference to it in FONTS for re-use
             let ctFont = CTFontCreateWithName(fontName as CFString, CGFloat(size), nil)
             let label = "\(fontName) \(size)"
             FONTS[key] = FontValue(_font: ctFont, label: label)
@@ -158,19 +168,19 @@ class Layout {
     }
     
     func closeTag(tag: String) {
-        if tag == "/i" {
+        if tag == "i" {
             self.style = "roman"
         }
-        else if tag == "/b" {
+        else if tag == "b" {
             self.weight = "normal"
         }
-        else if tag == "/small" {
+        else if tag == "small" {
             self.size += 2
         }
-        else if tag == "/big" {
+        else if tag == "big" {
             self.size -= 2
         }
-        else if tag == "/p" {
+        else if tag == "p" {
             flush()
             cursorY += VSTEP
         }

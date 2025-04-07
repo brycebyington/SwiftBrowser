@@ -85,12 +85,12 @@ class HTMLParser {
                 }
                 var (key, value) = (kv[0], kv[1])
 
-                attributes[key.lowercased()] = value
                 if value.count > 2
                     && (value.first == "'" || value.first == "\"")
                 {
                     value = String(value.dropFirst().dropLast())
                 }
+                attributes[key.lowercased()] = value
             } else {
                 attributes[attrpair.lowercased()] = ""
             }

@@ -54,12 +54,13 @@ class BrowserView: NSView {
             // create the line of text
             let line = CTLineCreateWithAttributedString(attributedString)
             
-            // grab the ascent value of the cont and subtract it from the y position
+            // grab the descent value of the cont and subtract it from the y position
+            let descent = CTFontGetDescent(ctFont)
             let ascent = CTFontGetAscent(ctFont)
             // use displayList's x and y coordinates to position the text and draw to the current context
             // to be honest i have no idea why the text position is shifted down VSTEP (18) * 2, but adding 36 fixes it
             // EXCEPT when i wrappped it with a scrollview, then the problem went away i guess
-            context.textPosition = CGPoint(x: CGFloat(item.x), y: CGFloat(item.y) - CGFloat(ascent)/*+ 36*/)
+            context.textPosition = CGPoint(x: CGFloat(item.x), y: CGFloat(item.y) + CGFloat(descent) - CGFloat(ascent)/*+ 36*/)
             CTLineDraw(line, context)
         }
     }
