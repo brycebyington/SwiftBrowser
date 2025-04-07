@@ -250,11 +250,16 @@ class BrowserURL {
         close(sockfd)
         
         let rootElement = HTMLParser(body: response).parse()
-        printTree(node: rootElement)
-        // optionally print layout results
-        print(Layout(tokens: rootElement).displayList)
+        // optionally print layout/tree results for debugging
+        // printTree(node: rootElement)
+        // print(Layout(tokens: rootElement).displayList)
         let layout = Layout(tokens: rootElement)
+        /*
+        for item in layout.displayList {
+            print("x: \(item.x), y: \(item.y), word: \(item.word)")
+        }*/
         return layout
+         
     }
     func lex(input: String) -> String? {
         var body = ""

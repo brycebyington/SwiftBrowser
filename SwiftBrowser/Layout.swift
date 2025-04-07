@@ -131,12 +131,20 @@ class Layout {
         }
         self.line.append((self.cursorX, word, _font))
         self.cursorX += Int(width + measureStringWidth(text: " ", _font: _font))
-        
     }
     
     func recurse(tree: Node) {
         if let textNode = tree as? TextNode {
-            for token in textNode.text.split(separator: " ") {
+            /*
+                python's split() splits on all whitespace characters so we have to do the same thing here
+                or else some words get concatenated incorrectly. this checks if any character in the text
+                is a whitespace character; if it is, then split at that character. stackoverflow also has
+                some more to say about the usage of "$0", which is that it refers to the index of a parameter. for
+                example, if you had a sort function with two numbers, $0 would refer to the first and $1
+                would refer to the second.
+             */
+                
+            for token in textNode.text.split(whereSeparator: { $0.isWhitespace }) {
                 word(word: String(token))
             }
         } else if let elementNode = tree as? ElementNode {
