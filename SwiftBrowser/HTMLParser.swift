@@ -16,7 +16,7 @@ class TextNode: Node, CustomStringConvertible {
     var text: String
     var parent: ElementNode?
     var children: [Node] { return [] }
-    
+
     var description: String {
         return text
     }
@@ -27,14 +27,13 @@ class TextNode: Node, CustomStringConvertible {
     }
 }
 
-
 // ElementNodes can have either TextNodes or other ElementNodes as children Nodes
 class ElementNode: Node, CustomStringConvertible {
     var tag: String
     var attributes: [String: String]
     var parent: ElementNode?
     var children: [Node]
-    
+
     var description: String {
         return "<\(tag)>"
     }
@@ -64,7 +63,6 @@ class HTMLParser {
             "link", "meta", "title", "style", "script",
         ]
     }
-    
 
     func getAttributes(text: String) -> (
         tag: String, attributes: [String: String]
@@ -133,7 +131,7 @@ class HTMLParser {
             }
         }
     }
-    
+
     func finish() -> ElementNode {
         print("Finishing unfinished tags: \(self.unfinished)")
         while self.unfinished.count > 1 {
@@ -144,7 +142,7 @@ class HTMLParser {
         print("Root ElementNode: \(self.unfinished.last!)")
         return self.unfinished.popLast() as! ElementNode
     }
-    
+
     func parse() -> ElementNode {
         print("Parsing body: \(self.body)")
         var text = ""
@@ -156,13 +154,11 @@ class HTMLParser {
                     addText(text: text)
                     text = ""
                 }
-            }
-            else if c == ">" {
+            } else if c == ">" {
                 inTag = false
                 addTag(tag: text)
                 text = ""
-            }
-            else {
+            } else {
                 text += String(c)
             }
         }
@@ -179,7 +175,7 @@ class HTMLParser {
             return
         }
         implicitTags(tag: "")  // in python this is None (nil), but i think empty string works
-        guard let parent = self.unfinished.last as? ElementNode else { return } // parent has to be ElementNode
+        guard let parent = self.unfinished.last as? ElementNode else { return }  // parent has to be ElementNode
         let newTextNode = TextNode(text: text, parent: parent)
         print("Successfully constructed TextNode: \(text)")
         parent.children.append(newTextNode)

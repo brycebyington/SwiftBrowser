@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		020916082DA4D31100A8C032 /* OpenSSL in Frameworks */ = {isa = PBXBuildFile; productRef = 020916072DA4D31100A8C032 /* OpenSSL */; };
 		02F59CBE2D9EDF7900309A9F /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 02F59CBD2D9EDF7400309A9F /* README.md */; };
 /* End PBXBuildFile section */
 
@@ -28,6 +29,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				020916082DA4D31100A8C032 /* OpenSSL in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -71,6 +73,7 @@
 			);
 			name = SwiftBrowser;
 			packageProductDependencies = (
+				020916072DA4D31100A8C032 /* OpenSSL */,
 			);
 			productName = SwiftBrowser;
 			productReference = 02F59C932D9EDE2700309A9F /* SwiftBrowser.app */;
@@ -100,6 +103,9 @@
 			);
 			mainGroup = 02F59C8A2D9EDE2700309A9F;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				020916062DA4D31100A8C032 /* XCRemoteSwiftPackageReference "OpenSSL-Package" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 02F59C942D9EDE2700309A9F /* Products */;
 			projectDirPath = "";
@@ -326,6 +332,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		020916062DA4D31100A8C032 /* XCRemoteSwiftPackageReference "OpenSSL-Package" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/krzyzanowskim/OpenSSL-Package.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.3.3001;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		020916072DA4D31100A8C032 /* OpenSSL */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 020916062DA4D31100A8C032 /* XCRemoteSwiftPackageReference "OpenSSL-Package" */;
+			productName = OpenSSL;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 02F59C8B2D9EDE2700309A9F /* Project object */;
 }
